@@ -1,4 +1,4 @@
-using Shared.DTOs.Client;
+using Shared.DTOs.User;
 
 namespace Service.Contracts;
 

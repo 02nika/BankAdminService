@@ -11,6 +11,7 @@ public class ServiceManager : IServiceManager
 {
     private readonly Lazy<IAuthService> _authService;
     private readonly Lazy<IUserService> _userService;
+    private readonly Lazy<IClientService> _clientService;
 
 
     public ServiceManager(
@@ -23,8 +24,10 @@ public class ServiceManager : IServiceManager
     {
         _authService = new Lazy<IAuthService>(() => new AuthService(jwtSettings));
         _userService = new Lazy<IUserService>(() => new UserService(repositoryManager, mapper));
+        _clientService = new Lazy<IClientService>(() => new ClientService(repositoryManager, mapper));
     }
     
     public IAuthService AuthService => _authService.Value;
     public IUserService UserService => _userService.Value;
+    public IClientService ClientService  => _clientService.Value;
 }

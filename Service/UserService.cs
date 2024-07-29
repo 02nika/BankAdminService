@@ -4,6 +4,7 @@ using Entities.Models;
 using Repository.Contracts;
 using Service.Contracts;
 using Shared.DTOs.Client;
+using Shared.DTOs.User;
 using Shared.Extensions;
 
 namespace Service;

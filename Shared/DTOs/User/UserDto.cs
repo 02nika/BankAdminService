@@ -1,6 +1,6 @@
 using Shared.DTOs.Enums;
 
-namespace Shared.DTOs.Client;
+namespace Shared.DTOs.User;
 
 public class UserDto
 {

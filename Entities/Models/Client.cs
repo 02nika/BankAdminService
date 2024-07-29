@@ -11,7 +11,6 @@ public class Client
     public Guid Id { get; set; }
 
     [Required(ErrorMessage = "email is a required field")]
-    [EmailAddress(ErrorMessage = "incorrect email format")]
     public string Email { get; set; }
 
     [MaxLength(50, ErrorMessage = "first name length cannot be more than 60 characters")]

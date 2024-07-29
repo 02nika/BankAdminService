@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Bank.Admin.Api.Extensions;
 using Entities.Models.Enums;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -5,6 +6,7 @@ using Service.Contracts;
 using Service.Mapper;
 using Shared.Config;
 using Shared.DTOs.Client;
+using Shared.DTOs.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +50,7 @@ app.UseAuthorization();
 
 #region user
 
-var user = app.MapGroup("api/user").WithTags("User");
+var user = app.MapGroup("api/users").WithTags("Users");
 
 user.MapPost("register", async (IServiceManager serviceManager, RegisterUserDto userDto) =>
 {
@@ -70,9 +72,14 @@ user.MapPost("login", async (IServiceManager serviceManager, LoginUserDto userDt
 
 #region client
 
-var client = app.MapGroup("api/client").WithTags("Client");
+var client = app.MapGroup("api/clients").WithTags("Clients");
 
-client.MapGet("", async (IServiceManager serviceManager) => { Results.Ok(); })
+client.MapPost("", async (IServiceManager serviceManager, CreateClientDto clientDto) =>
+    {
+        await serviceManager.ClientService.CreateAsync(clientDto);
+        
+        return Results.Ok();
+    })
     .RequireAuthorization(policy => policy.RequireRole(RoleType.Admin.ToString()));
 
 #endregion

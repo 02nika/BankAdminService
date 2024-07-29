@@ -1,44 +1,70 @@
 using System.ComponentModel.DataAnnotations;
+using Shared.Attributes;
 using Shared.DTOs.Enums;
+using Shared.Extensions;
 
 namespace Shared.DTOs.Client;
 
 public class CreateClientDto
 {
-    private string _email;
-    
     [Required(ErrorMessage = "email is a required field")]
-    [EmailAddress(ErrorMessage = "incorrect email format")]
-    [MaxLength(50, ErrorMessage = "email length cannot be more than 50 characters")]
-    public string Email 
-    {
-        get => _email;
-        set => _email = value.ToLower();
-    }
+    [MaxLength(60, ErrorMessage = "email length cannot be more than 60 characters")]
+    public string Email { get; set; }
     
-    [MaxLength(50, ErrorMessage = "first name length cannot be more than 50 characters")]
-    public string? FirstName { get; set; }
-    
-    [MaxLength(50, ErrorMessage = "last name length cannot be more than 50 characters")]
-    public string? LastName { get; set; }
-    
-    [MaxLength(11, ErrorMessage = "private number length cannot be more than 11 characters")]
-    public string? PrivateNumber { get; set; }
-    
-    public GenderTypeDto? Gender { get; set; }
-    public DateTime? BirthDate { get; set; }
-    
-    public Guid? CitizenshipId { get; set; }
-    
-    [MaxLength(20, ErrorMessage = "phone number length cannot be more than 20 characters")]
-    public string? PhoneNumber { get; set; }
+    [MaxLength(60, ErrorMessage = "first name length cannot be more than 60 characters")]
+    [Required(ErrorMessage = "first name is a required field")]
+    public string FirstName { get; set; }
 
-    [MaxLength(5, ErrorMessage = "birth place length cannot be more than 5 characters")]
-    public string? BirthPlace { get; set; }
+    [MaxLength(60, ErrorMessage = "last name length cannot be more than 60 characters")]
+    [Required(ErrorMessage = "last name is a required field")]
+    public string LastName { get; set; }
+
+    [ExactLength(11)]
+    [Required(ErrorMessage = "personal id is a required field")]
+    public string PersonalNumber { get; set; }
     
-    [MaxLength(100, ErrorMessage = "address length cannot be more than 100 characters")]
-    public string? Address { get; set; }
+    public string ProfilePhotoUrl { get; set; }
+
+    [Required(ErrorMessage = "mobile phone is a required field")]
+    public string PhoneNumber { get; set; }
     
-    [MaxLength(15, ErrorMessage = "channel length cannot be more than 15 characters")]
-    public string? Channel { get; set; }
+    [Required(ErrorMessage = "gender is a required field")]
+    public GenderTypeDto Gender { get; set; }
+
+    [Required(ErrorMessage = "address is a required field")]
+    public AddressDto Address { get; set; }
+    
+    [LengthMoreThan(0)]
+    public List<AccountDto> Accounts { get; set; }
+
+    public bool IsValid()
+    {
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(this);
+        var isValid = Validator.TryValidateObject(this, validationContext, validationResults, true);
+        
+        return isValid && PhoneNumber.PhoneNumberIsValid(Address.Country);
+    }
+}
+
+public class AccountDto
+{
+    [Required(ErrorMessage = "Account code is required")]
+    [MaxLength(100, ErrorMessage = "code length cannot be more than 100 characters")]
+    public string Code { get; set; }
+}
+
+public class AddressDto
+{
+    [MaxLength(50, ErrorMessage = "country length cannot be more than 60 characters")]
+    public string Country { get; set; }
+    
+    [MaxLength(50, ErrorMessage = "city length cannot be more than 60 characters")]
+    public string City { get; set; }
+    
+    [MaxLength(50, ErrorMessage = "street length cannot be more than 60 characters")]
+    public string Street { get; set; }
+    
+    [MaxLength(50, ErrorMessage = "zip code length cannot be more than 60 characters")]
+    public string ZipCode { get; set; }
 }

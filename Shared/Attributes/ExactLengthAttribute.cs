@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Attributes;
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class ExactLengthAttribute : ValidationAttribute
 {
     private readonly int _length;

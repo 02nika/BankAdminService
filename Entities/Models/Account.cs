@@ -14,7 +14,4 @@ public class Account
     [Required(ErrorMessage = "Account code is required")]
     [MaxLength(100, ErrorMessage = "code length cannot be more than 100 characters")]
     public string Code { get; set; }
-    
-    [ForeignKey("ClientId")] 
-    public Client Client { get; set; }
 }

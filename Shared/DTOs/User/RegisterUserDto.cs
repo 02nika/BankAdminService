@@ -1,12 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using Shared.DTOs.Enums;
 
-namespace Shared.DTOs.Client;
+namespace Shared.DTOs.User;
 
-public class LoginUserDto
+public class RegisterUserDto
 {
     [MaxLength(100, ErrorMessage = "username length cannot be more than 100 characters")]
     public string Name { get; set; }
     
     [Required(ErrorMessage = "password is required")]
-    public string Password { get; set; }   
+    public string Password { get; set; }
+
+    public RoleTypeDto Role { get; set; }
 }
