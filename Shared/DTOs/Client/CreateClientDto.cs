@@ -36,29 +36,6 @@ public class CreateClientDto
     
     [LengthMoreThan(0)]
     public List<AccountDto> Accounts { get; set; }
-
-    public bool IsValid(out string errorMessage)
-    {
-        errorMessage = null;
-
-        var validationResults = new List<ValidationResult>();
-        var validationContext = new ValidationContext(this);
-        var isValid = Validator.TryValidateObject(this, validationContext, validationResults, true);
-
-        if (!isValid)
-        {
-            errorMessage = string.Join("; ", validationResults.Select(vr => vr.ErrorMessage));
-            return false;
-        }
-
-        if (!PhoneNumber.PhoneNumberIsValid(Address.Country))
-        {
-            errorMessage = "Phone number is not valid";
-            return false;
-        }
-
-        return true;
-    }
 }
 
 public class AccountDto

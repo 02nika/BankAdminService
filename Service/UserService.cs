@@ -21,6 +21,8 @@ public class UserService : IUserService
     
     public async Task RegisterUserAsync(RegisterUserDto userDto)
     {
+        if(!userDto.IsValid(out var errorMessage)) throw new CreateClientNotValidException(errorMessage);
+        
         var user = await _repositoryManager.UserRepository.GetAsync(userDto.Name);
         if (user != null) throw new UserAlreadyExistsException();
         

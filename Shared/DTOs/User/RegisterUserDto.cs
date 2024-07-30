@@ -7,6 +7,7 @@ public class RegisterUserDto
 {
     [MaxLength(100, ErrorMessage = "username length cannot be more than 100 characters")]
     [Required]
+    [MinLength(3)]
     public string Name { get; set; }
     
     [Required(ErrorMessage = "password is required")]
