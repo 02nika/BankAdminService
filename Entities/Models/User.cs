@@ -10,6 +10,7 @@ public class User
     public Guid Id { get; set; }
 
     [MaxLength(100, ErrorMessage = "username length cannot be more than 100 characters")]
+    [Required(ErrorMessage = "userName is required")]
     public string UserName { get; set; }
 
     [Required(ErrorMessage = "password is required")]

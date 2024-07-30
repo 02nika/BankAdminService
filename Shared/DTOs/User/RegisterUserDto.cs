@@ -6,6 +6,7 @@ namespace Shared.DTOs.User;
 public class RegisterUserDto
 {
     [MaxLength(100, ErrorMessage = "username length cannot be more than 100 characters")]
+    [Required]
     public string Name { get; set; }
     
     [Required(ErrorMessage = "password is required")]
