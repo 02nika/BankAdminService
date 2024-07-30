@@ -2,6 +2,7 @@ using AutoMapper;
 using Entities.Models;
 using Entities.Models.Enums;
 using Shared.DTOs.Client;
+using Shared.DTOs.ClientSuggestion;
 using Shared.DTOs.Enums;
 using Shared.DTOs.User;
 using Shared.Extensions;
@@ -33,6 +34,8 @@ public class MappingProfile : Profile
 
         CreateMap<Client, ClientDto>()
             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Sex));
-        
+
+        CreateMap<ClientSearchSuggestion, ClientSearchSuggestionDto>()
+            .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender));
     }
 }

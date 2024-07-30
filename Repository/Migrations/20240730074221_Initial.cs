@@ -79,11 +79,47 @@ namespace Repository.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ClientSearchSuggestions",
+                schema: "backend",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PersonalNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    PageIndex = table.Column<int>(type: "int", nullable: false),
+                    PageSize = table.Column<int>(type: "int", nullable: false),
+                    OrderBy = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientSearchSuggestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClientSearchSuggestions_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "backend",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ClientId",
                 schema: "backend",
                 table: "Accounts",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientSearchSuggestions_UserId",
+                schema: "backend",
+                table: "ClientSearchSuggestions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -94,11 +130,15 @@ namespace Repository.Migrations
                 schema: "backend");
 
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "ClientSearchSuggestions",
                 schema: "backend");
 
             migrationBuilder.DropTable(
                 name: "Clients",
+                schema: "backend");
+
+            migrationBuilder.DropTable(
+                name: "Users",
                 schema: "backend");
         }
     }

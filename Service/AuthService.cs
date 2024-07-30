@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Entities.Models;
 using Entities.Models.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,11 +18,12 @@ public class AuthService : IAuthService
         _configSettings = jwtSettings.Value;
     }
 
-    public string GenerateJwtToken(RoleType role)
+    public string GenerateJwtToken(RoleType role, Guid userId)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.Role, role.ToString()),
+            new(ClaimTypes.UserData, userId.ToString())
         };
 
         var jwtToken = new JwtSecurityToken(

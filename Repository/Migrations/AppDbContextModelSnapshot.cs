@@ -105,6 +105,51 @@ namespace Repository.Migrations
                     b.ToTable("Clients", "backend");
                 });
 
+            modelBuilder.Entity("Entities.Models.ClientSearchSuggestion", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OrderBy")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PageIndex")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PageSize")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PersonalNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClientSearchSuggestions", "backend");
+                });
+
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -139,13 +184,22 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Entities.Models.Account", b =>
                 {
-                    b.HasOne("Entities.Models.Client", "Client")
+                    b.HasOne("Entities.Models.Client", null)
                         .WithMany("Accounts")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Client");
+            modelBuilder.Entity("Entities.Models.ClientSearchSuggestion", b =>
+                {
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entities.Models.Client", b =>

@@ -4,5 +4,5 @@ namespace Service.Contracts;
 
 public interface IAuthService
 {
-    string GenerateJwtToken(RoleType role);
+    string GenerateJwtToken(RoleType role, Guid userId);
 }
