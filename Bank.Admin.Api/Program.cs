@@ -113,6 +113,14 @@ client.MapGet("", async (IServiceManager serviceManager, HttpContext httpContext
     })
     .RequireAuthorization(policy => policy.RequireRole(RoleType.Admin.ToString()));
 
+client.MapDelete("{id:guid}", async (IServiceManager serviceManager, HttpContext httpContext, Guid id) =>
+    {
+        await serviceManager.ClientService.DeleteAsync(id);
+
+        return Results.Ok();
+    })
+    .RequireAuthorization(policy => policy.RequireRole(RoleType.Admin.ToString()));
+
 #endregion
 
 #region client search suggestions

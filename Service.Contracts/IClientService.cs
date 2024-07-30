@@ -6,4 +6,5 @@ public interface IClientService
 {
     Task CreateAsync(CreateClientDto clientDto);
     Task<List<ClientDto>> GetAsync(FetchClientParams clientParams);
+    Task DeleteAsync(Guid id);
 }

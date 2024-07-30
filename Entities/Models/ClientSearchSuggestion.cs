@@ -3,7 +3,6 @@ using Entities.Models.Enums;
 
 namespace Entities.Models;
 
-
 [Table("ClientSearchSuggestions", Schema = "backend")]
 public class ClientSearchSuggestion
 {
@@ -18,6 +17,6 @@ public class ClientSearchSuggestion
     public int PageIndex { get; set; }
     public int PageSize { get; set; }
     public bool OrderBy { get; set; }
-    
+
     public User User { get; set; }
 }

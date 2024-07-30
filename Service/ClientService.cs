@@ -34,4 +34,15 @@ public class ClientService : IClientService
 
         return _mapper.Map<List<ClientDto>>(clients);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var client = await _repositoryManager.ClientRepository.GetAsync(id);
+        
+        if(client is null) throw new ClientNotFoundException();
+
+        client.DeletedAt = DateTime.Now;
+        
+        await _repositoryManager.SaveAsync();
+    }
 }

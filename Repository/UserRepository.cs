@@ -16,12 +16,12 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
 
     public async Task<User?> GetAsync(string userName)
     {
-        return await FindByCondition(user => user.UserName == userName, false).SingleOrDefaultAsync();
+        return await FindByCondition(user => user.DeletedAt == null && user.UserName == userName, false).SingleOrDefaultAsync();
     }
     
     public async Task<User?> GetAsync(string userName, string passwordHash)
     {
-        return await FindByCondition(user => user.UserName == userName && user.PasswordHash == passwordHash,
+        return await FindByCondition(user => user.DeletedAt == null && user.UserName == userName && user.PasswordHash == passwordHash,
             false).SingleOrDefaultAsync();
     }
 }

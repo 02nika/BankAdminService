@@ -1,4 +1,5 @@
 using Entities.Models;
+using Entities.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using Repository.Contracts;
@@ -17,16 +18,21 @@ public class ClientRepository : RepositoryBase<Client>, IClientRepository
 
     public async Task<List<Client>> GetAsync(FetchClientParams clientParams)
     {
-        var liens = await FindByCondition(lien => lien.DeletedAt == null, false)
+        var clients = await FindByCondition(client => client.DeletedAt == null, false)
             .FilterByEmail(clientParams.FirstName)
             .FilterByFirstName(clientParams.FirstName)
             .FilterByLastName(clientParams.LastName)
+            .FilterByPersonalNumber(clientParams.PersonalNumber)
+            .FilterByPhoneNumber(clientParams.PhoneNumber)
+            .FilterByGender((GenderType)clientParams.Gender!)
             .Sort(clientParams.OrderBy)
             .Skip((clientParams.PageIndex - 1) * clientParams.PageSize)
             .Take(clientParams.PageSize)
             .Include(client => client.Accounts)
             .ToListAsync();
 
-        return liens;
+        return clients;
     }
+
+    public async Task<Client?> GetAsync(Guid id) => await FindByCondition(client => client.DeletedAt == null && client.Id == id, true).FirstOrDefaultAsync();
 }
