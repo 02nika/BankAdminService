@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Bank.Admin.Api.Extensions;
 using Entities.Models.Enums;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -6,6 +5,7 @@ using Service.Contracts;
 using Service.Mapper;
 using Shared.Config;
 using Shared.DTOs.Client;
+using Shared.DTOs.Enums;
 using Shared.DTOs.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,8 +77,31 @@ var client = app.MapGroup("api/clients").WithTags("Clients");
 client.MapPost("", async (IServiceManager serviceManager, CreateClientDto clientDto) =>
     {
         await serviceManager.ClientService.CreateAsync(clientDto);
-        
+
         return Results.Ok();
+    })
+    .RequireAuthorization(policy => policy.RequireRole(RoleType.Admin.ToString()));
+
+client.MapGet("", async (IServiceManager serviceManager, int pageIndex, int pageSize,
+        string? email = null, string? firstName = null, string? lastName = null,
+        string? personalNumber = null, string? phoneNumber = null, GenderTypeDto? gender = null,
+        bool orderBy = false
+    ) =>
+    {
+        var response = await serviceManager.ClientService.GetAsync(new FetchClientParams
+        {
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName,
+            PersonalNumber = personalNumber,
+            PhoneNumber = phoneNumber,
+            Gender = gender,
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            OrderBy = orderBy
+        });
+
+        return Results.Ok(response);
     })
     .RequireAuthorization(policy => policy.RequireRole(RoleType.Admin.ToString()));
 

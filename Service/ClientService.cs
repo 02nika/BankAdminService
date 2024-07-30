@@ -1,7 +1,6 @@
 using AutoMapper;
 using Entities.Exceptions;
 using Entities.Models;
-using Entities.Models.Enums;
 using Repository.Contracts;
 using Service.Contracts;
 using Shared.DTOs.Client;
@@ -21,25 +20,18 @@ public class ClientService : IClientService
 
     public async Task CreateAsync(CreateClientDto clientDto)
     {
-        if (!clientDto.IsValid()) throw new CreateClientNotValidException();
+        if (!clientDto.IsValid(out var errorMessage)) throw new CreateClientNotValidException(errorMessage);
 
-        var client = new Client
-        {
-            Email = clientDto.Email,
-            FirstName = clientDto.FirstName,
-            LastName = clientDto.LastName,
-            PersonalNumber = clientDto.PersonalNumber,
-            ProfilePhotoUrl = clientDto.ProfilePhotoUrl,
-            PhoneNumber = clientDto.PhoneNumber,
-            Sex = (GenderType)clientDto.Gender,
-            Country = clientDto.Address.Country,
-            City = clientDto.Address.City,
-            Street = clientDto.Address.Street,
-            ZipCode = clientDto.Address.ZipCode,
-            Accounts = _mapper.Map<List<Account>>(clientDto.Accounts)
-        };
+        var client = _mapper.Map<Client>(clientDto);
 
        await _repositoryManager.ClientRepository.CreateAsync(client);
        await _repositoryManager.SaveAsync();
+    }
+
+    public async Task<List<ClientDto>> GetAsync(FetchClientParams clientParams)
+    {
+        var clients = await _repositoryManager.ClientRepository.GetAsync(clientParams);
+
+        return _mapper.Map<List<ClientDto>>(clients);
     }
 }
